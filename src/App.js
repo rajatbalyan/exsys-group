@@ -15,7 +15,7 @@ import Products from "./components/Products";
 import Team from "./components/Team";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer"
 
 function App() {
 
@@ -38,6 +38,7 @@ function App() {
               </li>
               <li>
                 <Nav.Link href="/products">Products</Nav.Link>
+                {/* <Nav.Link href="/ok">Products</Nav.Link> */}
               </li>
               {/* <li>
                 <Nav.Link href="/team">Team</Nav.Link>
@@ -58,6 +59,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
           {/* <Route path="/products" element={<ProductsPage />} /> */}
+          {/* <Route path="/products" element={<testComponent />} /> */}
+          <Route path="/ok" element={<ok />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/about_us" element={<AboutUs />} />

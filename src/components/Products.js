@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import ProductDetails from "./ProductDetails";
 // import classNames from 'classnames';
 
 import carbon from "../images/Product Images/carbon.png";
@@ -23,6 +24,7 @@ import instruments from "../images/Product Images/instruments.jpg";
 
 import cstyle from "./card.module.css";
 import styles from "./blocks.module.css";
+import ProductsPage from "./ProductsPage";
 
 function Products() {
   // Card Variable
@@ -259,6 +261,7 @@ function Products() {
 
   const [expandedProductId, setExpandedProductId] = useState(null);
   const [expandedTypeId, setExpandedTypeId] = useState(null);
+  const [currentId, setCurrentId] = useState("");
   const [selectedTypeId, setSelectedTypeId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const navigate = useNavigate();
@@ -279,6 +282,10 @@ function Products() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    setProducts(products); // or update products based on fetched data
+  }, []);
+
   const handleBackButton = () => {
     setExpandedTypeId(null);
     if (expandedProductId !== null) {
@@ -288,14 +295,18 @@ function Products() {
   };
 
   const handleProductClick = (productId) => {
+    console.log("expandedProductId set to:", productId);
     setExpandedProductId(productId);
-    setExpandedTypeId(null);
+    setExpandedTypeId(null); // Reset type selection
+    setCurrentId(productId); // Update ID to product ID initially
     navigate(`#product-${productId}`);
   };
 
   const handleTypeClick = (typeId) => {
     setExpandedTypeId(typeId);
-    searchParams.set("typeId", typeId);
+    const selectedType = products[expandedProductId].types[typeId];
+    const correctId = selectedType.id;
+    setCurrentId(correctId); // Update ID to type ID
     navigate(`#product-${expandedProductId}-type-${typeId}`);
   };
 
@@ -325,6 +336,17 @@ function Products() {
       </div>
     );
   };
+
+  console.log("expandedProductId:", expandedProductId); // Log the value
+
+  if (!products.length) {
+    // Check for empty products array
+    return (
+      <div>
+        <h1>Loading products...</h1>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -362,78 +384,101 @@ function Products() {
               ))}
           </div>
         ) : (
-          expandedProductId &&
-          expandedTypeId &&
-          products[expandedProductId - 1] && (
-            //     expandedProductId !== null &&
-            //     expandedTypeId !== null && (
-            //       <div className="product-details">
-            //         {products[expandedProductId - 1] &&
-            //           products[expandedProductId - 1].images && (
-            //             <div className="image-container">
-            //               {products[expandedProductId - 1] &&
-            //                 ThumbnailPanel({
-            //                   images: products[expandedProductId - 1].images,
-            //                   onImageChange: handleImageChange,
-            //                 })}
 
-            //               {EnlargedImage(
-            //                 products[expandedProductId - 1].images[selectedImage]
-            //               )}
-            //             </div>
-            //           )}
-            //         {expandedTypeId !== null && (
-            //           <div className="product-info">
-            //             <h3>Product Information</h3>
-            //             <ul>
-            //               {products[expandedProductId - 1] && (
-            //                 <React.Fragment>
-            //                   {products[expandedProductId - 1].types.map(
-            //                     (type, index) => {
-            //                       if (type.id === expandedTypeId) {
-            //                         return (
-            //                           <li key={index}>
-            //                             {type.name}: {type.details.size}
-            //                           </li>
-            //                         );
-            //                       }
-            //                       return null;
-            //                     }
-            //                   )}
-            //                   <li>
-            //                     Model No.:{" "}
-            //                     {products[expandedProductId - 1].details.modelNo}
-            //                   </li>
-            //                 </React.Fragment>
-            //               )}
-            //             </ul>
-            //           </div>
-            //         )}
-            //       </div>
-            // )
+          // expandedProductId !== null && expandedProductId < products.length && (
+          //   <ProductDetails
+          //     key={expandedProductId}
+          //     expandedProductId={expandedProductId}
+          //     expandedTypeId={expandedTypeId}
+          //     products={products}
+          //   />
+          // )
 
-            <div className="product-details">
-              <h2>{products[expandedProductId - 1].name}</h2>
-              <p>
-                Type:
-                {products[expandedProductId - 1].types[expandedTypeId - 1].name}
-              </p>
-              <p>
-                Model No.:
-                {
-                  products[expandedProductId - 1].types[expandedTypeId - 1]
-                    .details.modelNo
-                }
-              </p>
-              <p>
-                Size:
-                {
-                  products[expandedProductId - 1].types[expandedTypeId - 1]
-                    .details.size
-                }
-              </p>
-            </div>
-          )
+          <ProductDetails
+            key={expandedProductId}
+            expandedProductId={expandedProductId}
+            expandedTypeId={expandedTypeId}
+            products={products} // Pass the entire products array if needed
+            currentId={currentId}
+          />
+
+          // <h1>Hello</h1>
+
+          // expandedProductId &&
+          // expandedTypeId &&
+          // products[expandedProductId - 1] && (
+
+          // First comment
+          //     expandedProductId !== null &&
+          //     expandedTypeId !== null && (
+          //       <div className="product-details">
+          //         {products[expandedProductId - 1] &&
+          //           products[expandedProductId - 1].images && (
+          //             <div className="image-container">
+          //               {products[expandedProductId - 1] &&
+          //                 ThumbnailPanel({
+          //                   images: products[expandedProductId - 1].images,
+          //                   onImageChange: handleImageChange,
+          //                 })}
+
+          //               {EnlargedImage(
+          //                 products[expandedProductId - 1].images[selectedImage]
+          //               )}
+          //             </div>
+          //           )}
+          //         {expandedTypeId !== null && (
+          //           <div className="product-info">
+          //             <h3>Product Information</h3>
+          //             <ul>
+          //               {products[expandedProductId - 1] && (
+          //                 <React.Fragment>
+          //                   {products[expandedProductId - 1].types.map(
+          //                     (type, index) => {
+          //                       if (type.id === expandedTypeId) {
+          //                         return (
+          //                           <li key={index}>
+          //                             {type.name}: {type.details.size}
+          //                           </li>
+          //                         );
+          //                       }
+          //                       return null;
+          //                     }
+          //                   )}
+          //                   <li>
+          //                     Model No.:{" "}
+          //                     {products[expandedProductId - 1].details.modelNo}
+          //                   </li>
+          //                 </React.Fragment>
+          //               )}
+          //             </ul>
+          //           </div>
+          //         )}
+          //       </div>
+          // )
+
+          // Second comment
+          // <div className="product-details">
+          //   <h2>{products[expandedProductId - 1].name}</h2>
+          //   <p>
+          //     Type:
+          //     {products[expandedProductId - 1].types[expandedTypeId - 1].name}
+          //   </p>
+          //   <p>
+          //     Model No.:
+          //     {
+          //       products[expandedProductId - 1].types[expandedTypeId - 1]
+          //         .details.modelNo
+          //     }
+          //   </p>
+          //   <p>
+          //     Size:
+          //     {
+          //       products[expandedProductId - 1].types[expandedTypeId - 1]
+          //         .details.size
+          //     }
+          //   </p>
+          // </div>
+          // )
         )}
       </div>
     </div>
