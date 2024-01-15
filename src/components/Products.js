@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import ProductDetails from "./ProductDetails";
 // import classNames from 'classnames';
 
 import carbon from "../images/Product Images/carbon.png";
@@ -72,6 +73,7 @@ function Products() {
   };
 
   // Products Chain Setup
+
   const [products, setProducts] = useState([
     {
       id: "carbon",
@@ -259,87 +261,111 @@ function Products() {
 
   const [expandedProductId, setExpandedProductId] = useState(null);
   const [expandedTypeId, setExpandedTypeId] = useState(null);
-  const [selectedTypeId, setSelectedTypeId] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  // const [expandedIds, setExpandedIds] = useState({
+  //   productId: null,
+  //   typeId: null,
+  // });
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { productId, typeId } = useParams();
 
+  selectedProduct = products.find(
+    (product) => product.id === expandedProductId
+  );
+
+  selectedType =selectedProduct.types.find((type) => type.id === expandedTypeId);
+
+  const {
+    name,
+    imagePath,
+    details: { size, modelNo },
+  } = selectedType;
+
+  // Arpit Method
+  // useEffect(() => {
+  //   // Handle browser back button
+  //   const handleBackButton = () => {
+  //     setExpandedIds({ productId: null, typeId: null });
+  //   };
+
+  //   window.addEventListener("popstate", handleBackButton);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handleBackButton);
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   // Set initial expanded IDs based on URL params
+  //   if (typeId) {
+  //     setExpandedIds({ productId, typeId });
+  //   }
+  // }, [productId, typeId]);
+  // const handleProductClick = (productId) => {
+  //   setExpandedIds({ productId, typeId: null });
+  //   navigate(`/products/${productId}`);
+  // };
+  // const handleTypeClick = (typeId) => {
+  //   setExpandedIds({ productId, typeId });
+  //   navigate(`/products/${productId}/${typeId}`);
+  // };
+
+  // Arpit Method with modification from Bard
   useEffect(() => {
-    window.addEventListener("popstate", handleBackButton);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, []);
-
-  useEffect(() => {
-    const initialTypeId = searchParams.get("typeId");
-    if (initialTypeId) {
-      setExpandedTypeId(initialTypeId);
+    if (expandedProductId) {
+      const selectedProduct = products.find((product) => product.id === expandedProductId);
+      setSelectedProduct(selectedProduct); // Assuming a state variable for selectedProduct
     }
-  }, [searchParams]);
+  }, [expandedProductId, products]);
+  
+  useEffect(() => {
+    if (expandedTypeId && selectedProduct) {
+      const selectedType = selectedProduct.types.find((type) => type.id === expandedTypeId);
+      setSelectedType(selectedType); // Assuming a state variable for selectedType
+    }
+  }, [expandedTypeId, selectedProduct]);
+  
 
   const handleBackButton = () => {
-    setExpandedTypeId(null);
-    if (expandedProductId !== null) {
-      //   navigate(-1);
+    if (expandedTypeId) {
+      // If in product-details, go back to product-types
+      setExpandedTypeId(null);
+    } else if (expandedProductId) {
+      // If in product-types, go back to product-list
       setExpandedProductId(null);
     }
   };
 
   const handleProductClick = (productId) => {
-    setExpandedProductId(productId);
-    setExpandedTypeId(null);
-    navigate(`#product-${productId}`);
+    console.log("Clicked product:", productId);
+    setExpandedProductId(productId); // Set expandedProductId
+    setExpandedTypeId(null); // Only reset expandedTypeId
+    console.log("Updated state:", { expandedProductId, expandedTypeId });
   };
 
   const handleTypeClick = (typeId) => {
+    console.log("Inside handleTypeClick:");
+    console.log("expandedProductId:", expandedProductId);
+    console.log("expandedTypeId:", expandedTypeId);
+    setExpandedProductId(productId); // Use productId from useParams
     setExpandedTypeId(typeId);
-    searchParams.set("typeId", typeId);
-    navigate(`#product-${expandedProductId}-type-${typeId}`);
+    console.log("Updated state:", { expandedProductId, expandedTypeId });
   };
 
-  const handleImageChange = (imageIndex) => {
-    setSelectedImage(imageIndex);
-  };
-
-  const EnlargedImage = (selectedImage) => {
-    return (
-      <div className="enlarged-image">
-        <img src={selectedImage} alt="Selected Product Image" />
-      </div>
-    );
-  };
-
-  const ThumbnailPanel = ({ images, onImageChange }) => {
-    return (
-      <div className="thumbnail-panel">
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Product Image ${index + 1}`}
-            onClick={() => onImageChange(index)}
-          />
-        ))}
-      </div>
-    );
-  };
+  console.log("selectedProduct:", selectedProduct);
+  console.log("expandedTypeId:", expandedTypeId);
+  console.log("selectedProduct.types:", selectedProduct?.types);
 
   return (
     <div>
-      <div>
-        {expandedProductId === null ? (
+      {
+        expandedProductId === null ? (
           <div>
             <div className="product-list">
               {products.map((product) => (
                 <div key={product.id} className={styles.itemListDiv}>
                   <a onClick={() => handleProductClick(product.id)}>
-                    {Card(
-                      `${product.imagePath}`,
-                      `${product.name}`
-                      // `${() => handleProductClick(product.id)}`
-                    )}
+                    {Card(`${product.imagePath}`, `${product.name}`)}
                   </a>
                 </div>
               ))}
@@ -352,90 +378,53 @@ function Products() {
               .types.map((type) => (
                 <div key={type.id} className={styles.itemListDiv}>
                   <a onClick={() => handleTypeClick(type.id)}>
-                    {Card(
-                      `${type.imagePath}`,
-                      `${type.name}`
-                      // `${() => handleTypeClick(type.id)}`
-                    )}
+                    {Card(`${type.imagePath}`, `${type.name}`)}
                   </a>
                 </div>
               ))}
           </div>
         ) : (
-          expandedProductId &&
-          expandedTypeId &&
-          products[expandedProductId - 1] && (
-            //     expandedProductId !== null &&
-            //     expandedTypeId !== null && (
-            //       <div className="product-details">
-            //         {products[expandedProductId - 1] &&
-            //           products[expandedProductId - 1].images && (
-            //             <div className="image-container">
-            //               {products[expandedProductId - 1] &&
-            //                 ThumbnailPanel({
-            //                   images: products[expandedProductId - 1].images,
-            //                   onImageChange: handleImageChange,
-            //                 })}
+          // console.log("Inside conditional rendering:");
+          // console.log("selectedProduct:", selectedProduct);
 
-            //               {EnlargedImage(
-            //                 products[expandedProductId - 1].images[selectedImage]
-            //               )}
-            //             </div>
-            //           )}
-            //         {expandedTypeId !== null && (
-            //           <div className="product-info">
-            //             <h3>Product Information</h3>
-            //             <ul>
-            //               {products[expandedProductId - 1] && (
-            //                 <React.Fragment>
-            //                   {products[expandedProductId - 1].types.map(
-            //                     (type, index) => {
-            //                       if (type.id === expandedTypeId) {
-            //                         return (
-            //                           <li key={index}>
-            //                             {type.name}: {type.details.size}
-            //                           </li>
-            //                         );
-            //                       }
-            //                       return null;
-            //                     }
-            //                   )}
-            //                   <li>
-            //                     Model No.:{" "}
-            //                     {products[expandedProductId - 1].details.modelNo}
-            //                   </li>
-            //                 </React.Fragment>
-            //               )}
-            //             </ul>
-            //           </div>
-            //         )}
-            //       </div>
-            // )
-
-            <div className="product-details">
-              <h2>{products[expandedProductId - 1].name}</h2>
-              <p>
-                Type:
-                {products[expandedProductId - 1].types[expandedTypeId - 1].name}
-              </p>
-              <p>
-                Model No.:
-                {
-                  products[expandedProductId - 1].types[expandedTypeId - 1]
-                    .details.modelNo
-                }
-              </p>
-              <p>
-                Size:
-                {
-                  products[expandedProductId - 1].types[expandedTypeId - 1]
-                    .details.size
-                }
-              </p>
-            </div>
-          )
-        )}
-      </div>
+          <div className="product-details">
+            {selectedProduct ? (
+              <>
+                <h2>{selectedType.name}</h2>
+                <img src={selectedType.imagePath} alt={selectedType.name} />
+                <p>Size: {selectedType.details.size}</p>
+                <p>Model No: {selectedType.details.modelNo}</p>
+              </>
+            ) : (
+              <p>Loading product details...</p>
+            )}
+            {/* {!selectedProduct && <p>Loading product details...</p>}
+            {!selectedType && <p>Product type not found.</p>} */}
+          </div>
+        )
+        // ChatGPT
+        // expandedTypeId !== null && (
+        //   <div className="product-info">
+        //     <h3>Product Information</h3>
+        //     <ul>
+        //       {products
+        //         .find((p) => p.id === expandedProductId)
+        //         ?.types?.find((type) => type.id === expandedTypeId)
+        //         ?.details && (
+        //           <li>
+        //             {products
+        //               .find((p) => p.id === expandedProductId)
+        //               .types.find((type) => type.id === expandedTypeId)
+        //               .details.size}
+        //           </li>
+        //         )}
+        //       <li>
+        //         Model No.: {products.find((p) => p.id === expandedProductId)?.details?.modelNo}
+        //       </li>
+        //     </ul>
+        //   </div>
+        // ))
+      }
     </div>
   );
 }
