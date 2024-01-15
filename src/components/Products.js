@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ProductDetails from "./ProductDetails";
 // import classNames from 'classnames';
 
 import carbon from "../images/Product Images/carbon.png";
@@ -270,17 +269,17 @@ function Products() {
   const navigate = useNavigate();
   const { productId, typeId } = useParams();
 
-  selectedProduct = products.find(
-    (product) => product.id === expandedProductId
-  );
+  // selectedProduct = products.find(
+  //   (product) => product.id === expandedProductId
+  // );
 
-  selectedType =selectedProduct.types.find((type) => type.id === expandedTypeId);
+  // selectedType =selectedProduct.types.find((type) => type.id === expandedTypeId);
 
   const {
     name,
     imagePath,
-    details: { size, modelNo },
-  } = selectedType;
+    details: { size, modelNo } = {},
+  } = selectedType || {};
 
   // Arpit Method
   // useEffect(() => {
@@ -313,18 +312,21 @@ function Products() {
   // Arpit Method with modification from Bard
   useEffect(() => {
     if (expandedProductId) {
-      const selectedProduct = products.find((product) => product.id === expandedProductId);
-      setSelectedProduct(selectedProduct); // Assuming a state variable for selectedProduct
+      const updatedSelectedProduct = products.find(
+        (product) => product.id === expandedProductId
+      );
+      setSelectedProduct(updatedSelectedProduct);
     }
   }, [expandedProductId, products]);
-  
+
   useEffect(() => {
     if (expandedTypeId && selectedProduct) {
-      const selectedType = selectedProduct.types.find((type) => type.id === expandedTypeId);
-      setSelectedType(selectedType); // Assuming a state variable for selectedType
+      const updatedSelectedType = selectedProduct.types.find(
+        (type) => type.id === expandedTypeId
+      );
+      setSelectedType(updatedSelectedType);
     }
   }, [expandedTypeId, selectedProduct]);
-  
 
   const handleBackButton = () => {
     if (expandedTypeId) {
@@ -358,73 +360,49 @@ function Products() {
 
   return (
     <div>
-      {
-        expandedProductId === null ? (
-          <div>
-            <div className="product-list">
-              {products.map((product) => (
-                <div key={product.id} className={styles.itemListDiv}>
-                  <a onClick={() => handleProductClick(product.id)}>
-                    {Card(`${product.imagePath}`, `${product.name}`)}
-                  </a>
-                </div>
-              ))}
-            </div>
+      {expandedProductId === null ? (
+        <div>
+          <div className="product-list">
+            {products.map((product) => (
+              <div key={product.id} className={styles.itemListDiv}>
+                <a onClick={() => handleProductClick(product.id)}>
+                  {Card(`${product.imagePath}`, `${product.name}`)}
+                </a>
+              </div>
+            ))}
           </div>
-        ) : expandedTypeId === null ? (
-          <div className="product-types">
-            {products
-              .find((p) => p.id === expandedProductId)
-              .types.map((type) => (
-                <div key={type.id} className={styles.itemListDiv}>
-                  <a onClick={() => handleTypeClick(type.id)}>
-                    {Card(`${type.imagePath}`, `${type.name}`)}
-                  </a>
-                </div>
-              ))}
-          </div>
-        ) : (
-          // console.log("Inside conditional rendering:");
-          // console.log("selectedProduct:", selectedProduct);
-
+        </div>
+      ) : expandedTypeId === null ? (
+        <div className="product-types">
+          {products
+            .find((p) => p.id === expandedProductId)
+            .types.map((type) => (
+              <div key={type.id} className={styles.itemListDiv}>
+                <a onClick={() => handleTypeClick(type.id)}>
+                  {Card(`${type.imagePath}`, `${type.name}`)}
+                </a>
+              </div>
+            ))}
+        </div>
+      ) : (
+        selectedProduct &&
+        expandedTypeId && (
           <div className="product-details">
-            {selectedProduct ? (
+            {selectedType ? (
               <>
-                <h2>{selectedType.name}</h2>
-                <img src={selectedType.imagePath} alt={selectedType.name} />
-                <p>Size: {selectedType.details.size}</p>
-                <p>Model No: {selectedType.details.modelNo}</p>
+                <h2>{name}</h2>
+                <img src={imagePath} alt={name} />
+                {size && <p>Size: {size}</p>}{" "}
+                {/* Conditional rendering for size */}
+                {modelNo && <p>Model No: {modelNo}</p>}{" "}
+                {/* Consider for modelNo too */}
               </>
             ) : (
               <p>Loading product details...</p>
             )}
-            {/* {!selectedProduct && <p>Loading product details...</p>}
-            {!selectedType && <p>Product type not found.</p>} */}
           </div>
         )
-        // ChatGPT
-        // expandedTypeId !== null && (
-        //   <div className="product-info">
-        //     <h3>Product Information</h3>
-        //     <ul>
-        //       {products
-        //         .find((p) => p.id === expandedProductId)
-        //         ?.types?.find((type) => type.id === expandedTypeId)
-        //         ?.details && (
-        //           <li>
-        //             {products
-        //               .find((p) => p.id === expandedProductId)
-        //               .types.find((type) => type.id === expandedTypeId)
-        //               .details.size}
-        //           </li>
-        //         )}
-        //       <li>
-        //         Model No.: {products.find((p) => p.id === expandedProductId)?.details?.modelNo}
-        //       </li>
-        //     </ul>
-        //   </div>
-        // ))
-      }
+      )}
     </div>
   );
 }
