@@ -262,18 +262,11 @@ function Products() {
   const [expandedTypeId, setExpandedTypeId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  // const [expandedIds, setExpandedIds] = useState({
   //   productId: null,
   //   typeId: null,
   // });
   const navigate = useNavigate();
   const { productId, typeId } = useParams();
-
-  // selectedProduct = products.find(
-  //   (product) => product.id === expandedProductId
-  // );
-
-  // selectedType =selectedProduct.types.find((type) => type.id === expandedTypeId);
 
   const {
     name,
@@ -328,21 +321,40 @@ function Products() {
     }
   }, [expandedTypeId, selectedProduct]);
 
-  const handleBackButton = () => {
-    if (expandedTypeId) {
-      // If in product-details, go back to product-types
-      setExpandedTypeId(null);
-    } else if (expandedProductId) {
-      // If in product-types, go back to product-list
-      setExpandedProductId(null);
-    }
-  };
+  // useEffect(() => {
+  //   const handlePopState = () => {
+  //     // Detect when the user clicks the back button
+  //     const url = window.location.hash;
+  //     if (url.includes("product-details")) {
+  //       setExpandedTypeId(null);
+  //     } else if (url.includes("product-types")) {
+  //       setExpandedProductId(null);
+  //     }
+  //   };
+
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, []);
+
+  // const handleBackButton = () => {
+  //   if (expandedTypeId) {
+  //     // If in product-details, go back to product-types
+  //     setExpandedTypeId(null);
+  //   } else if (expandedProductId) {
+  //     // If in product-types, go back to product-list
+  //     setExpandedProductId(null);
+  //   }
+  // };
 
   const handleProductClick = (productId) => {
     console.log("Clicked product:", productId);
     setExpandedProductId(productId); // Set expandedProductId
     setExpandedTypeId(null); // Only reset expandedTypeId
     console.log("Updated state:", { expandedProductId, expandedTypeId });
+    navigate(`#product-types/${productId}`);
   };
 
   const handleTypeClick = (typeId) => {
@@ -352,6 +364,7 @@ function Products() {
     setExpandedProductId(productId); // Use productId from useParams
     setExpandedTypeId(typeId);
     console.log("Updated state:", { expandedProductId, expandedTypeId });
+    navigate(`#product-details/${productId}/${typeId}`);
   };
 
   console.log("selectedProduct:", selectedProduct);
