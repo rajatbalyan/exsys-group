@@ -16,6 +16,8 @@ import Team from "./components/Team";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
 import Footer from "./components/Footer";
+import ProductTypes from "./components/ProductTypes";
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
 
@@ -57,6 +59,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/product-types/:productId" element={<ProductTypes />} />
+          <Route path="/product-details/:productId/:typeId" element={<ProductDetails />} />
           {/* <Route path="/products" element={<ProductsPage />} /> */}
           <Route path="/team" element={<Team />} />
           <Route path="/contact_us" element={<ContactUs />} />

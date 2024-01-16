@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-// import classNames from 'classnames';
+// import { useNavigate, useParams } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 import carbon from "../images/Product Images/carbon.png";
 import chemicals from "../images/Product Images/chemicals.png";
@@ -24,7 +30,11 @@ import instruments from "../images/Product Images/instruments.jpg";
 import cstyle from "./card.module.css";
 import styles from "./blocks.module.css";
 
-function Products() {
+import { ProductsContext } from './ProductsContext';
+import ProductTypes from "./ProductTypes";
+import ProductDetails from "./ProductDetails";
+
+const Products = ({ match }) => {
   // Card Variable
   const Card = (img, name) => {
     return (
@@ -262,11 +272,7 @@ function Products() {
   const [expandedTypeId, setExpandedTypeId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  //   productId: null,
-  //   typeId: null,
-  // });
   const navigate = useNavigate();
-  const { productId, typeId } = useParams();
 
   const {
     name,
@@ -350,73 +356,75 @@ function Products() {
   // };
 
   const handleProductClick = (productId) => {
-    console.log("Clicked product:", productId);
-    setExpandedProductId(productId); // Set expandedProductId
-    setExpandedTypeId(null); // Only reset expandedTypeId
-    console.log("Updated state:", { expandedProductId, expandedTypeId });
-    navigate(`#product-types/${productId}`);
-  };
-
-  const handleTypeClick = (typeId) => {
-    console.log("Inside handleTypeClick:");
-    console.log("expandedProductId:", expandedProductId);
-    console.log("expandedTypeId:", expandedTypeId);
-    setExpandedProductId(productId); // Use productId from useParams
-    setExpandedTypeId(typeId);
-    console.log("Updated state:", { expandedProductId, expandedTypeId });
-    navigate(`#product-details/${productId}/${typeId}`);
-  };
+    setExpandedProductId(productId);
+    setExpandedTypeId(null);
+    navigate(`/product-types/${productId}`);
+  };  
 
   console.log("selectedProduct:", selectedProduct);
   console.log("expandedTypeId:", expandedTypeId);
   console.log("selectedProduct.types:", selectedProduct?.types);
 
   return (
-    <div>
-      {expandedProductId === null ? (
-        <div>
-          <div className="product-list">
-            {products.map((product) => (
-              <div key={product.id} className={styles.itemListDiv}>
-                <a onClick={() => handleProductClick(product.id)}>
-                  {Card(`${product.imagePath}`, `${product.name}`)}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : expandedTypeId === null ? (
-        <div className="product-types">
-          {products
-            .find((p) => p.id === expandedProductId)
-            .types.map((type) => (
-              <div key={type.id} className={styles.itemListDiv}>
-                <a onClick={() => handleTypeClick(type.id)}>
-                  {Card(`${type.imagePath}`, `${type.name}`)}
-                </a>
-              </div>
-            ))}
-        </div>
-      ) : (
-        selectedProduct &&
-        expandedTypeId && (
-          <div className="product-details">
-            {selectedType ? (
-              <>
-                <h2>{name}</h2>
-                <img src={imagePath} alt={name} />
-                {size && <p>Size: {size}</p>}{" "}
-                {/* Conditional rendering for size */}
-                {modelNo && <p>Model No: {modelNo}</p>}{" "}
-                {/* Consider for modelNo too */}
-              </>
-            ) : (
-              <p>Loading product details...</p>
-            )}
-          </div>
-        )
-      )}
-    </div>
+    <ProductsContext.Provider
+      value={{
+        expandedProductId,
+        expandedTypeId,
+        selectedProduct,
+        selectedType,
+      }}
+    >
+      <Router>
+        <Routes>
+        <Route path="/product-types/:productId" element={<ProductTypes productId={match.params.productId} />} />
+          <Route path="/product-details/:productId/:typeId" element={<ProductDetails />} />
+        </Routes>
+      </Router>
+    </ProductsContext.Provider>
+
+    // <div>
+    //   {expandedProductId === null ? (
+    //     <div>
+    //       <div className="product-list">
+    //         {products.map((product) => (
+    //           <div key={product.id} className={styles.itemListDiv}>
+    //             <a onClick={() => handleProductClick(product.id)}>
+    //               {Card(`${product.imagePath}`, `${product.name}`)}
+    //             </a>
+    //           </div>
+    //         ))}
+    //       </div>
+    //     </div>
+    //   ) : expandedTypeId === null ? (
+    //     <div className="product-types">
+    //       {products
+    //         .find((p) => p.id === expandedProductId)
+    //         .types.map((type) => (
+    //           <div key={type.id} className={styles.itemListDiv}>
+    //             <a onClick={() => handleTypeClick(type.id)}>
+    //               {Card(`${type.imagePath}`, `${type.name}`)}
+    //             </a>
+    //           </div>
+    //         ))}
+    //     </div>
+    //   ) : (
+    //     selectedProduct &&
+    //     expandedTypeId && (
+    //       <div className="product-details">
+    //         {selectedType ? (
+    //           <>
+    //             <h2>{name}</h2>
+    //             <img src={imagePath} alt={name} />
+    //             {size && <p>Size: {size}</p>}{" "}
+    //             {modelNo && <p>Model No: {modelNo}</p>}{" "}
+    //           </>
+    //         ) : (
+    //           <p>Loading product details...</p>
+    //         )}
+    //       </div>
+    //     )
+    //   )}
+    // </div>
   );
 }
 
