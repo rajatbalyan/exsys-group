@@ -280,35 +280,6 @@ const Products = ({ match }) => {
     details: { size, modelNo } = {},
   } = selectedType || {};
 
-  // Arpit Method
-  // useEffect(() => {
-  //   // Handle browser back button
-  //   const handleBackButton = () => {
-  //     setExpandedIds({ productId: null, typeId: null });
-  //   };
-
-  //   window.addEventListener("popstate", handleBackButton);
-
-  //   return () => {
-  //     window.removeEventListener("popstate", handleBackButton);
-  //   };
-  // }, []);
-  // useEffect(() => {
-  //   // Set initial expanded IDs based on URL params
-  //   if (typeId) {
-  //     setExpandedIds({ productId, typeId });
-  //   }
-  // }, [productId, typeId]);
-  // const handleProductClick = (productId) => {
-  //   setExpandedIds({ productId, typeId: null });
-  //   navigate(`/products/${productId}`);
-  // };
-  // const handleTypeClick = (typeId) => {
-  //   setExpandedIds({ productId, typeId });
-  //   navigate(`/products/${productId}/${typeId}`);
-  // };
-
-  // Arpit Method with modification from Bard
   useEffect(() => {
     if (expandedProductId) {
       const updatedSelectedProduct = products.find(
