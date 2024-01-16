@@ -10,8 +10,8 @@ function ProductImages({ images, selectedImage, onImageChange }) {
   };
 
   return (
-    <div className={styles.product-images-container}>
-      <div className="thumbnails">
+    <div className={styles.product_images_container}>
+      <div className={styles.thumbnail_view}>
         {images.map((imagePath) => (
           <img
             key={imagePath}
@@ -23,7 +23,7 @@ function ProductImages({ images, selectedImage, onImageChange }) {
           />
         ))}
       </div>
-      <div className="main-image">
+      <div className={styles.main_image_view}>
         <img
           src={mainImage}
           alt="Main Product Image"
