@@ -1,35 +1,48 @@
-import React from "react";
-import SmartSlider from "react-smart-slider";
+import React, { useState, useEffect } from 'react';
 
-import I1 from "../images/filter.jpg";
-import I2 from "../images/hp_pump.jpeg";
-import I3 from "../images/vessel.jpg";
 import WaterImg from "../images/water_home.jpg";
+import I1 from "../images/Product Images/anthracite_media.png";
+import I2 from "../images/Product Images/coconut_shell.jpg";
+import I3 from "../images/Product Images/anadose.jpg";
+import ArrowBack from '../images/back.png';
+import ArrowForward from '../images/right.png';
 
 import styles from "./blocks.module.css";
 
 function HomePage() {
-  const slidesArray = [
-    {
-      src: { I1 },
-    },
-    {
-      src: { I2 },
-    },
-    {
-      src: { I3 },
-    },
-    {
-      src: { I1 },
-    },
-    {
-      src: { I2 },
-    },
-  ];
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const images = [I1, I2, I3, I1, I2];
+
+  const nextSlide = () => {
+    setCurrentSlide((currentSlide + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((currentSlide - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (event.key === 'ArrowRight') {
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [prevSlide, nextSlide]);
 
   return (
     <div>
-      <SmartSlider slides={slidesArray} buttonShape="square" />
+      <div className={styles.slider}>
+        <img src={images[currentSlide]} className={styles.slideImage} alt="Slide" />
+        <button onClick={nextSlide} className={styles.nextArrow}>❯</button>
+        <button onClick={prevSlide} className={styles.prevArrow}>❮</button>
+      </div>
 
       <div className={styles.contact}>
         <div class={styles.info}>
@@ -51,7 +64,12 @@ function HomePage() {
         </div>
 
         <div className={styles.message}>
-          <form className={styles.msgformclass}>
+          <form
+            action="https://formsubmit.co/exsyscomponents@gmail.com"
+            method="post"
+            name="MessageForm"
+            className={styles.msgformclass}
+          >
             <label for="name">
               <b>Name*</b>
             </label>

@@ -33,7 +33,12 @@ function ContactUs() {
         </div>
 
         <div className={styles.message}>
-          <form className={styles.msgformclass}>
+          <form
+            action="https://formsubmit.co/exsyscomponents@gmail.com"
+            method="post"
+            name="MessageForm"
+            className={styles.msgformclass}
+          >
             <label for="name">
               <b>Name*</b>
             </label>
