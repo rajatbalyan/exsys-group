@@ -8,7 +8,7 @@ import {
 import { Container, Navbar, Nav } from "react-bootstrap";
 
 import styles from "./App.module.css";
-import Logo from './images/exsys_tp.png';
+import Logo from "./images/exsys_tp.png";
 
 import HomePage from "./components/HomePage";
 import Products from "./components/Products";
@@ -16,11 +16,9 @@ import Team from "./components/Team";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
 import Footer from "./components/Footer";
-import ProductTypes from "./components/ProductTypes";
-import ProductDetails from "./components/ProductDetails";
+import UnderService from "./components/UnderService";
 
 function App() {
-
   return (
     <Container fluid>
       {/* Navigation Bar */}
@@ -38,8 +36,11 @@ function App() {
               <li>
                 <Nav.Link href="/">Home</Nav.Link>
               </li>
-              <li>
+              {/* <li>
                 <Nav.Link href="/products">Products</Nav.Link>
+              </li> */}
+              <li>
+                <Nav.Link href="/under+development">Products</Nav.Link>
               </li>
               {/* <li>
                 <Nav.Link href="/team">Team</Nav.Link>
@@ -54,15 +55,11 @@ function App() {
           </div>
         </Navbar>
 
-        {/* ChatGPT */}
-
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/product-types/:productId" element={<ProductTypes />} />
-          <Route path="/product-details/:productId/:typeId" element={<ProductDetails />} />
-          {/* <Route path="/products" element={<ProductsPage />} /> */}
-          <Route path="/team" element={<Team />} />
+          <Route path="/under+development" element={<UnderService />} />
+          {/* <Route path="/team" element={<Team />} /> */}
           <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="*" element={<Navigate to="/" />} />
