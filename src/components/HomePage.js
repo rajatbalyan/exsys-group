@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 import WaterImg from "../images/water_home.jpg";
-import I1 from "../images/Product Images/anthracite_media.png";
-import I2 from "../images/Product Images/coconut_shell.jpg";
-import I3 from "../images/Product Images/anadose.jpg";
+import I1 from "../images/slide_pic_2.jpg";
+import I2 from "../images/slide_pic_1.png";
+import I3 from "../images/slide_pic_3.png";
 import ArrowBack from '../images/back.png';
 import ArrowForward from '../images/right.png';
 
@@ -12,7 +12,7 @@ import styles from "./blocks.module.css";
 function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const images = [I1, I2, I3, I1, I2];
+  const images = [I1, I2, I3];
 
   const nextSlide = () => {
     setCurrentSlide((currentSlide + 1) % images.length);
