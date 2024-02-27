@@ -12,6 +12,7 @@ import styles from "./blocks.module.css";
 function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Slider Images
   const images = [I1, I2, I3];
 
   const nextSlide = () => {
