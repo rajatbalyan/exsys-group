@@ -574,7 +574,7 @@ function Products() {
     window.addEventListener("hashchange", handleLocationChange);
 
     return () => {
-      window.removeEventListener("hashchange", handleLocationChange);
+      window.removeEventListener("popstate", handleBackButton);
     };
   }, []);
 
@@ -656,18 +656,9 @@ function Products() {
                 <p>Loading product details...</p>
               )}
             </div>
-            <div className={styles.productImages}>
-              {selectedType && (
-                <ProductImages
-                  images={selectedType.images}
-                  selectedImage={selectedImage}
-                  onImageChange={setSelectedImage}
-                />
-              )}
-            </div>
-          </div>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
   );
 }
