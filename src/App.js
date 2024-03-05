@@ -56,7 +56,7 @@ function App() {
         </Navbar>
 
         <Routes>
-          <Route path="/" component={HomePage} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/products" component={Products} />
           <Route path="/under+development" component={UnderService} />
           <Route path="/team" element={<Team />} />
