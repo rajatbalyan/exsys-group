@@ -57,8 +57,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/products" component={Products} />
-          <Route path="/under+development" component={UnderService} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/under+development" element={<UnderService />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact_us" component={ContactUs} />
           <Route path="/about_us" component={AboutUs} />
