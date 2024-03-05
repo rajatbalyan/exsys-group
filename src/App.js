@@ -56,20 +56,20 @@ function App() {
         </Navbar>
 
         <Routes>
-          {/* <Route path="/" component={HomePage} />
+          <Route path="/" component={HomePage} />
           <Route path="/products" component={Products} />
           <Route path="/under+development" component={UnderService} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact_us" component={ContactUs} />
           <Route path="/about_us" component={AboutUs} />
-          <Route path="*" element={<Navigate to="/" />} /> */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+          {/* <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
           <Route path="/under+development" element={<UnderService />} />
-          {/* <Route path="/team" element={<Team />} /> */}
+          <Route path="/team" element={<Team />} />
           <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/about_us" element={<AboutUs />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
         <Footer />
       </Router>
