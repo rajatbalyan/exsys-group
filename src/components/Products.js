@@ -656,9 +656,9 @@ function Products() {
                 <p>Loading product details...</p>
               )}
             </div>
-          )
-        )}
-      </div>
+          </div>
+        )
+      )}
     </div>
   );
 }
