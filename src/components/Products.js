@@ -574,7 +574,7 @@ function Products() {
     window.addEventListener("hashchange", handleLocationChange);
 
     return () => {
-      window.removeEventListener("popstate", handleBackButton);
+      window.removeEventListener("hashchange", handleLocationChange);
     };
   }, []);
 
