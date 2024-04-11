@@ -54,25 +54,25 @@ function App() {
             </ul>
           </div>
         </Navbar>
+      </Router>
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/under+development" element={<UnderService />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/contact_us" element={<ContactUs />} />
-          <Route path="/about_us" element={<AboutUs />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          {/* <Route path="/" element={<HomePage />} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/under+development" element={<UnderService />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/contact_us" element={<ContactUs />} />
+        <Route path="/about_us" element={<AboutUs />} />
+        <Route path="*" element={<Navigate to="/" />} />
+        {/* <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
           <Route path="/under+development" element={<UnderService />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="*" element={<Navigate to="/" />} /> */}
-        </Routes>
-        <Footer />
-      </Router>
+      </Routes>
+      <Footer />
     </Container>
   );
 }
