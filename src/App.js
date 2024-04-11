@@ -1,5 +1,4 @@
 import {
-  HashRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -22,39 +21,37 @@ function App() {
   return (
     <Container fluid>
       {/* Navigation Bar */}
-      <Router>
-        <Navbar className={styles.navbar}>
-          <div className={styles.logodiv}>
-            <a href="/">
-              <img src={Logo} className={styles.logo} alt="" />
-              <h3>Exsys Components</h3>
-              <p>We Promise to Serve You Better!</p>
-            </a>
-          </div>
-          <div className={styles.listdiv}>
-            <ul className={styles.navbarlist}>
-              <li>
-                <Nav.Link href="/">Home</Nav.Link>
-              </li>
-              {/* <li>
+      <Navbar className={styles.navbar}>
+        <div className={styles.logodiv}>
+          <a href="/">
+            <img src={Logo} className={styles.logo} alt="" />
+            <h3>Exsys Components</h3>
+            <p>We Promise to Serve You Better!</p>
+          </a>
+        </div>
+        <div className={styles.listdiv}>
+          <ul className={styles.navbarlist}>
+            <li>
+              <Nav.Link href="/">Home</Nav.Link>
+            </li>
+            {/* <li>
                 <Nav.Link href="/products">Products</Nav.Link>
               </li> */}
-              <li>
-                <Nav.Link href="/under+development">Products</Nav.Link>
-              </li>
-              {/* <li>
+            <li>
+              <Nav.Link href="/under+development">Products</Nav.Link>
+            </li>
+            {/* <li>
                 <Nav.Link href="/team">Team</Nav.Link>
               </li> */}
-              <li>
-                <Nav.Link href="/contact_us">Contact Us</Nav.Link>
-              </li>
-              <li>
-                <Nav.Link href="/about_us">About Us</Nav.Link>
-              </li>
-            </ul>
-          </div>
-        </Navbar>
-      </Router>
+            <li>
+              <Nav.Link href="/contact_us">Contact Us</Nav.Link>
+            </li>
+            <li>
+              <Nav.Link href="/about_us">About Us</Nav.Link>
+            </li>
+          </ul>
+        </div>
+      </Navbar>
 
       <Routes>
         <Route path="/" element={<HomePage />} />
