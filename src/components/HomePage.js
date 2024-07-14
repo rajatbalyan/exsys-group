@@ -6,8 +6,10 @@ import I2 from "../images/slide_pic_1.png";
 import I3 from "../images/slide_pic_3.png";
 import ArrowBack from '../images/back.png';
 import ArrowForward from '../images/right.png';
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import styles from "./blocks.module.css";
+import BrandSlideShow from './BrandSlideShow';
 
 function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -44,6 +46,8 @@ function HomePage() {
         <button onClick={prevSlide} className={styles.prevArrow}>❮</button>
       </div>
 
+      <BrandSlideShow />
+
       <div className={styles.contact}>
         <div class={styles.info}>
           <h1>Be in touch with us</h1>
@@ -61,6 +65,16 @@ function HomePage() {
           <p>
             <b>Phone No.: </b>+91-9911117791 ; +91-8743951372
           </p>
+          <div className={styles.socialMedia}>
+            <a href="https://www.instagram.com/exsyscomponents/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+              <FaInstagram className={styles.socialIcon} />
+              Instagram
+            </a>
+            <a href="https://www.linkedin.com/company/exsys-components-2012/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+              <FaLinkedin className={styles.socialIcon} />
+              LinkedIn
+            </a>
+          </div>
         </div>
 
         <div className={styles.message}>

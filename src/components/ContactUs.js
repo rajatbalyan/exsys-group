@@ -2,6 +2,7 @@ import React from "react";
 
 import officeImg from "../images/office_vector1.jpg";
 import factoryImg from "../images/factory_vector.jpg";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import styles from "./blocks.module.css";
 
@@ -14,7 +15,7 @@ function ContactUs() {
   return (
     <div>
       <div className={styles.contact}>
-        <div class={styles.info}>
+        <div className={styles.info}>
           <h1>Be in touch with us</h1>
           <p>
             <b>Office: </b>BH 506, Puri Business Hub, 81- High Street, Sector
@@ -30,6 +31,16 @@ function ContactUs() {
           <p>
             <b>Phone No.: </b>+91-9911117791 ; +91-8743951372
           </p>
+          <div className={styles.socialMedia}>
+            <a href="https://www.instagram.com/exsyscomponents/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+              <FaInstagram className={styles.socialIcon} />
+              Instagram
+            </a>
+            <a href="www.linkedin.com/company/exsys-components-2012/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+              <FaLinkedin className={styles.socialIcon} />
+              LinkedIn
+            </a>
+          </div>
         </div>
 
         <div className={styles.message}>
